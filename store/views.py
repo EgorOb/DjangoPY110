@@ -11,3 +11,8 @@ def products_view(request):
             return HttpResponseNotFound("Данного продукта нет в базе данных")
 
         return JsonResponse(DATABASE)
+
+
+def shop_view(request):
+    if request.method == "GET":
+        return render(request, 'store/shop.html')
