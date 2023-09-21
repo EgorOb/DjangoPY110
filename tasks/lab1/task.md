@@ -40,6 +40,9 @@ https://developer.tech.yandex.ru/
 
 ![img_5.png](img_5.png)
 
+По умолчанию тариф будет стоять Тестовый. Если есть необходимость его можно понизить до «Погода на вашем сайте» у кнопки
+Тарифы
+
 Как использовать API описано в https://yandex.ru/dev/weather/doc/dg/concepts/forecast-info.html
 
 response = requests.get('https://api.weather.yandex.ru/v2/forecast?lat=55.75396&lon=37.620393', headers={"X-Yandex-API-Key": "54d73608-c8dd-4c98-b18f-d9a5056525ab"})
