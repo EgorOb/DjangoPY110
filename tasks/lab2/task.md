@@ -57,12 +57,12 @@ def random_view(request):
 
 В итоге общий код в `urls.py` будет таким
 
-![img_1.png](img_1.png)
+![1.png](pic_for_task/1.png)
 
 Зайдём на http://127.0.0.1:8000/ и получим следующую картинку, где видно, что есть определенные маршруты по которым 
 можно перейти 
 
-![img.png](img.png)
+![2.png](pic_for_task/2.png)
 
 Допишем в адресную строку `/random/` и перейдем или перейдем сразу по http://127.0.0.1:8000/random/
 
@@ -122,16 +122,16 @@ urlpatterns = [
 
 `path('', include('app_datetime.urls')),`
 
-![img_2.png](img_2.png)
+![3.png](pic_for_task/3.png)
 
 После регистрации пути выйдет ошибка, что Django не может найти приложение `app_datetime`. Приложение необходимо также 
 зарегистрировать в переменной `INSTALLED_APPS` файла `settings.py` папки `project`.
 
-![img_3.png](img_3.png)
+![4.png](pic_for_task/4.png)
 
 Далее через основной адрес можно будет посмотреть по каким маршрутам можно перейти
 
-![img_4.png](img_4.png)
+![5.png](pic_for_task/5.png)
 
 По маршруту http://127.0.0.1:8000/datetime/ можно будет посмотреть текущее время
 
@@ -296,13 +296,13 @@ def products_view(request):
 
 Выглядеть это будет так
 
-![img_5.png](img_5.png)
+![6.png](pic_for_task/6.png)
 
 Далее в папку `store/static/store` скопируем папки из `files/lab2/static`, а в папку
 `store/templates/store` скопируем `shop.html` из `files/lab2`. В итоге должно получиться
 следующее
 
-![img_6.png](img_6.png)
+![7.png](pic_for_task/7.png)
 
 Специфика дублирования названия `store` у `static` и `templates` вызвана поиском
 статических файлов и шаблонов механизмом Django. 
@@ -349,7 +349,7 @@ def shop_view(request):
 
 Страница должна выглядеть так
 
-![img_7.png](img_7.png)
+![8.png](pic_for_task/8.png)
 
 Функционал, что был сделан ранее никак не затронут, предыдущие маршруты работают.
 
