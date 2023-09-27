@@ -393,6 +393,17 @@ if __name__ == "__main__":
 Если сделать выжимку из `html_css.md`, то чтения и работы с HTML на нашем модуле запомним следующие аспекты HTML и CSS:
 
 
+![img_24.png](img_24.png)
+
+![img_25.png](img_25.png)
+
+![img_26.png](img_26.png)
+
+![img_27.png](img_27.png)
+
+![img_28.png](img_28.png)
+
+![img_29.png](img_29.png)
 
 
 #### *Задание*
