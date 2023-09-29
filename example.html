@@ -6,30 +6,15 @@
 </head>
 <body>
 <style>
-    #text_red {
-    color: red;
-    }
-    #font_arial {
-    font-family: Arial, sans-serif;
-    font-size: 26px;
-    }
-
-    #color_red {color: red}
-    #color_green {color: green}
-    #color_orange {color: orange}
+    p, .my-class, #my-element {
+        /* список стилей с одинаковыми правилами */
+        background: #ff6a7d;
+}
 </style>
-<p id="text_red">
-    Этот текст будет красным, а тут <b>жирно красным</b>
-</p>
-<p id="font_arial">
-    Этот текст будет в шрифте Arial размером 26px.
-</p>
-<p id="font_arial">
-    Внутри также можно менять элементы, если они поддерживают атрибуты.
-    Допустим как
-    <span id="color_green">H</span>
-    <sub id="color_red">2</sub>
-    <span id="color_orange"style="color: orange;">O</span>
-</p>
+<p>Первая строка<br>Вторая строка<br>Третья строка</p>
+<span class="my-class">Строка</span><br>
+<div id="my-element">
+    Элемент
+</div>
 </body>
 </html>
