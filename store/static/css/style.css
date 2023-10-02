@@ -31,7 +31,7 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
-  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Poppins, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
 
 *,
@@ -51,7 +51,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Poppins, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -4749,7 +4749,7 @@ a.close.disabled {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Poppins, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -4834,7 +4834,7 @@ a.close.disabled {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Poppins, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -7995,7 +7995,7 @@ a.text-dark:hover, a.text-dark:focus {
     border-color: #dee2e6; } }
 
 body {
-  font-family: "Roboto", Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
   background: #fff;
   font-size: 15px;
   line-height: 1.8;
@@ -8021,7 +8021,7 @@ h1, h2, h3, h4, h5,
   line-height: 1.5;
   font-weight: 400;
   color: #000000;
-  font-family: "Roboto", Arial, sans-serif; }
+  font-family: "Poppins", Arial, sans-serif; }
 
 .text-primary {
   color: #82ae46 !important; }
@@ -8239,7 +8239,7 @@ h1, h2, h3, h4, h5,
       font-weight: 800;
       color: #fff;
       font-size: 30px;
-      font-family: "Roboto", Arial, sans-serif;
+      font-family: "Poppins", Arial, sans-serif;
       letter-spacing: 3px;
       text-transform: uppercase; }
     .hero-wrap .slider-text .btn-primary {
@@ -8739,7 +8739,7 @@ h1, h2, h3, h4, h5,
       font-weight: 300;
       text-transform: uppercase;
       letter-spacing: 1px;
-      font-family: "Roboto", Arial, sans-serif; }
+      font-family: "Poppins", Arial, sans-serif; }
       .product .text h3 a {
         color: #000000; }
     .product .text p.price {
@@ -9284,7 +9284,7 @@ textarea.form-control {
     font-size: 40px;
     font-weight: 600;
     color: #000000;
-    font-family: "Roboto", Arial, sans-serif; }
+    font-family: "Poppins", Arial, sans-serif; }
     @media (max-width: 767.98px) {
       .heading-section h2 {
         font-size: 28px; } }
@@ -9355,7 +9355,7 @@ textarea.form-control {
       font-size: 15px;
       text-transform: uppercase;
       font-weight: 500;
-      font-family: "Roboto", Arial, sans-serif;
+      font-family: "Poppins", Arial, sans-serif;
       color: #000000; }
     .ftco-services .services .media-body span {
       text-transform: uppercase;
@@ -9375,7 +9375,7 @@ textarea.form-control {
     background: #82ae46; }
     .ftco-category .category-wrap .text h2 {
       font-size: 18px;
-      font-family: "Roboto", Arial, sans-serif; }
+      font-family: "Poppins", Arial, sans-serif; }
       .ftco-category .category-wrap .text h2 a {
         color: #fff; }
 
