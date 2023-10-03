@@ -101,43 +101,43 @@
 						      <tr class="text-center">
 						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 						        
-						        <td class="image-prod"><div class="img" style="background-image:url(static/images/product-3.jpg);"></div></td>
+						        <td class="image-prod"><div class="img" style="background-image:url(static/images/product-1.jpg);"></div></td>
 						        
 						        <td class="product-name">
-						        	<h3>Bell Pepper</h3>
-						        	<p>Far far away, behind the word mountains, far from the countries</p>
+						        	<h3>Болгарский перец</h3>
+						        	<p>Сочный и яркий, он добавит красок и вкуса в ваши блюда.</p>
 						        </td>
 						        
-						        <td class="price">$4.90</td>
+						        <td class="price">80.00</td>
 						        
 						        <td class="quantity">
 						        	<div class="input-group mb-3">
-					             	<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
+					             	<input type="number" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
 					          	</div>
 					          </td>
 						        
-						        <td class="total">$4.90</td>
+						        <td class="total">80.00</td>
 						      </tr><!-- END TR-->
 
 						      <tr class="text-center">
 						        <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 						        
-						        <td class="image-prod"><div class="img" style="background-image:url(static/images/product-4.jpg);"></div></td>
+						        <td class="image-prod"><div class="img" style="background-image:url(static/images/product-2.jpg);"></div></td>
 						        
 						        <td class="product-name">
-						        	<h3>Bell Pepper</h3>
-						        	<p>Far far away, behind the word mountains, far from the countries</p>
+						        	<h3>Клубника</h3>
+						        	<p>Сладкая и ароматная клубника, полная витаминов, чтобы сделать ваш день ярче.</p>
 						        </td>
 						        
-						        <td class="price">$15.70</td>
+						        <td class="price">120.00</td>
 						        
 						        <td class="quantity">
 						        	<div class="input-group mb-3">
-					             	<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
+					             	<input type="number" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
 					          	</div>
 					          </td>
 						        
-						        <td class="total">$15.70</td>
+						        <td class="total">120.00</td>
 						      </tr><!-- END TR-->
 						    </tbody>
 						  </table>
@@ -147,60 +147,62 @@
     		<div class="row justify-content-end">
     			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
     				<div class="cart-total mb-3">
-    					<h3>Coupon Code</h3>
-    					<p>Enter your coupon code if you have one</p>
+    					<h3>Промокод</h3>
+    					<p>Введите код купона, если он у вас есть</p>
   						<form action="#" class="info">
-	              <div class="form-group">
-	              	<label for="">Coupon code</label>
-	                <input type="text" class="form-control text-left px-3" placeholder="">
-	              </div>
-	            </form>
+						  <div class="form-group">
+							<input type="text" id='promo-input' class="form-control text-left px-3" placeholder="Промокод">
+						  </div>
+						</form>
     				</div>
-    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Apply Coupon</a></p>
+    				<p><button id="checkCoupon" class="btn btn-primary py-3 px-4">Применить промокод</button></p>
+					<div id="couponResult"></div>
     			</div>
     			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
     				<div class="cart-total mb-3">
-    					<h3>Estimate shipping and tax</h3>
-    					<p>Enter your destination to get a shipping estimate</p>
+    					<h3>Расчёт доставки</h3>
+    					<p>Введите ваш город доставки</p>
   						<form action="#" class="info">
-	              <div class="form-group">
-	              	<label for="">Country</label>
-	                <input type="text" class="form-control text-left px-3" placeholder="">
-	              </div>
-	              <div class="form-group">
-	              	<label for="country">State/Province</label>
-	                <input type="text" class="form-control text-left px-3" placeholder="">
-	              </div>
-	              <div class="form-group">
-	              	<label for="country">Zip/Postal Code</label>
-	                <input type="text" class="form-control text-left px-3" placeholder="">
-	              </div>
-	            </form>
+						  <div class="form-group">
+							<label>Страна</label>
+							<input type="text" id='delivery-country' class="form-control text-left px-3" placeholder="Россия" required>
+						  </div>
+						  <div class="form-group">
+							<label>Город/Населенный пункт</label>
+							<input type="text" id='delivery-city' class="form-control text-left px-3" placeholder="Санкт-Петербург" required>
+						  </div>
+						  <div class="form-group">
+							<label>Почтовый код</label>
+							<input type="text" id='delivery-post-code' class="form-control text-left px-3" placeholder="195251" required>
+						  </div>
+
+						</form>
     				</div>
-    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Estimate</a></p>
+						<p><button id="estimateDelivery" class="btn btn-primary py-3 px-4">Рассчитать</button></p>
+						<div id="estimateResult"></div>
     			</div>
     			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
     				<div class="cart-total mb-3">
-    					<h3>Cart Totals</h3>
+    					<h3>Стоимость покупку</h3>
     					<p class="d-flex">
-    						<span>Subtotal</span>
-    						<span>$20.60</span>
+    						<span>Промежуточный итог</span>
+    						&#x20bd  <span id="subtotal-value">200.00</span>
     					</p>
     					<p class="d-flex">
-    						<span>Delivery</span>
-    						<span>$0.00</span>
+    						<span>Доставка</span>
+    						&#x20bd <span id="delivery-value">0.00</span>
     					</p>
     					<p class="d-flex">
-    						<span>Discount</span>
-    						<span>$3.00</span>
+    						<span>Скидки</span>
+    						&#x20bd <span id="discount-value">0.00</span>
     					</p>
     					<hr>
     					<p class="d-flex total-price">
-    						<span>Total</span>
-    						<span>$17.60</span>
+    						<span>Итог</span>
+    						<b style="color: black">&#x20bd</b> <span id="total-value">200.00</span>
     					</p>
     				</div>
-    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+    				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Оплатить</a></p>
     			</div>
     		</div>
 			</div>
@@ -320,6 +322,179 @@
   	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   	<script src="static/js/google-map.js"></script>
   	<script src="static/js/main.js"></script>
+
+	<script>
+		// Получаем элементы с значениями
+		let subtotalElement = document.getElementById('subtotal-value');
+		let deliveryElement = document.getElementById('delivery-value');
+		let discountElement = document.getElementById('discount-value');
+		let totalElement = document.getElementById('total-value');
+
+		// Функция для обновления итога
+		function updateTotal() {
+			// Получаем значения промежуточного итога, доставки и скидок из элементов
+			let subtotal = parseFloat(subtotalElement.textContent);
+			let delivery = parseFloat(deliveryElement.textContent);
+			let discount = parseFloat(discountElement.textContent);
+
+			// Вычисляем итог
+			let total = subtotal + delivery - discount;
+
+			// Убеждаемся, что итог не становится отрицательным
+			if (total < 0) {
+				total = 0;
+			}
+
+			// Обновляем элемент с итогом
+			totalElement.textContent = total.toFixed(2);
+		}
+
+		// Вызываем функцию для первичного расчета итога
+		updateTotal();
+	</script>
+
+	<script>
+		// Получаем все элементы с классами "quantity" и "total"
+		let quantityInputs = document.querySelectorAll('.quantity input');
+		let totalElements = document.querySelectorAll('.total');
+		let priceElements = document.querySelectorAll('.price');
+		// Функция для обновления промежуточного итога
+		function updateSubtotal() {
+			// Инициализируем переменные для промежуточного итога и цены товара
+			let subtotal = 0;
+
+			// Проходимся по всем элементам с классом "quantity"
+			quantityInputs.forEach(function(input, index) {
+				// Получаем значение количества товара
+				let quantity = parseInt(input.value, 10);
+
+				// Получаем цену товара из HTML (хотя обычно идёт запрос на сервер)
+				let price = parseFloat(priceElements[index].textContent);
+
+				// Рассчитываем общую цену для данной позиции
+				let itemTotal = quantity * price;
+
+				// Обновляем элемент с классом "total" для данной позиции
+				totalElements[index].textContent = itemTotal.toFixed(2);
+
+				// Добавляем общую цену данной позиции к общему промежуточному итогу
+				subtotal += itemTotal;
+			});
+
+			// Обновляем элемент с итогом
+			document.getElementById('subtotal-value').textContent = subtotal.toFixed(2); // Форматируем итог в нужный вид
+
+			updateTotal(); // Вызываем пересчёт корзины
+			// document.querySelector('.total-price span:last-child').textContent = '₽ ' + subtotal.toFixed(2); // Форматируем итог в нужный вид
+		}
+
+		// Слушаем событие изменения ввода количества товара
+		quantityInputs.forEach(function(input) {
+			input.addEventListener('change', updateSubtotal);
+		});
+
+		// Вызываем функцию для первичного расчета итога
+		updateSubtotal();
+		</script>
+
+	<script>
+		// Проверка действия купона
+
+		let promoElement = document.getElementById('promo-input');
+		let checkCouponButton = document.getElementById('checkCoupon');
+		// Функция для проверки действия купона
+		function checkCoupon() {
+			// Получаем значение купона, которое вы хотите проверить
+			let couponCode = promoElement.value;
+
+			console.log(couponCode);
+
+			// Делаем кнопку неактивной, чтобы предотвратить повторные запросы
+    		checkCouponButton.disabled = true;
+
+			// Отправляем асинхронный GET-запрос на сервер для проверки купона
+			fetch('http://127.0.0.1:8000/coupon/check/' + couponCode, {
+				method: 'GET'
+			})
+			.then(function(response) {
+				// Проверяем статус ответа
+				if (!response.ok) {
+					throw new Error('Ошибка при проверке купона');
+				}
+				return response.json();
+			})
+			.then(function(data) {
+				// Обрабатываем данные, которые пришли с сервера
+				if (data.is_valid) {
+					document.getElementById('couponResult').textContent = 'Купон действителен! Размер скидки: ' + data.discount + '%';
+				} else {
+					document.getElementById('couponResult').textContent = 'Купон не действителен!';
+				}
+			})
+			.catch(function(error) {
+				// Обрабатываем ошибку
+				console.error(error);
+				document.getElementById('couponResult').textContent = 'Произошла ошибка при проверке купона';
+			})
+			.finally(function() {
+				// Включаем кнопку обратно после получения ответа (успешного или с ошибкой)
+				checkCouponButton.disabled = false;
+			});
+		};
+
+		checkCouponButton.addEventListener('click', checkCoupon);
+	</script>
+
+  	<script>
+		// Расчёт стоимости доставки
+
+		let deliveryCountry = document.getElementById('delivery-country');
+		let deliveryCity = document.getElementById('delivery-city');
+		let deliveryCode = document.getElementById('delivery-post-code');
+		let estimateButton = document.getElementById('estimateDelivery');
+		// let deliveryElement = document.getElementById('delivery-value');
+		// Функция для расчёта стоимости доставки
+		function estimateDelivery() {
+			// Получаем значение купона, которое вы хотите проверить
+			let country = deliveryCountry.value;
+			let city = deliveryCity.value;
+			let code = deliveryCode.value;
+
+			console.log(country, city, code);
+
+			// Делаем кнопку неактивной, чтобы предотвратить повторные запросы
+    		estimateButton.disabled = true;
+
+			// Отправляем асинхронный GET-запрос на сервер для расчёта стоимости доставки
+			fetch('http://127.0.0.1:8000/delivery/estimate?country=' + country + '&city=' + city + '&code=' + code, {
+				method: 'GET'
+			})
+			.then(function(response) {
+				// Проверяем статус ответа
+				if (!response.ok) {
+					throw new Error('Ошибка при проверке купона');
+				}
+				return response.json();
+			})
+			.then(function(data) {
+				// Обрабатываем данные, которые пришли с сервера
+				deliveryElement.textContent = data.price.toFixed(2);
+				document.getElementById('estimateResult').textContent = 'Доставка рассчитана и внесена в стоимость заказа';
+				updateTotal();
+			})
+			.catch(function(error) {
+				// Обрабатываем ошибку
+				console.error(error);
+				document.getElementById('estimateResult').textContent = 'Сюда, к сожалению, не доставляем';
+			})
+			.finally(function() {
+				// Включаем кнопку обратно после получения ответа (успешного или с ошибкой)
+				estimateButton.disabled = false;
+			});
+		};
+
+		estimateButton.addEventListener('click', estimateDelivery);
+	</script>
 
   </body>
 </html>

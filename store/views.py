@@ -17,6 +17,28 @@ def products_view(request):
 
 def shop_view(request):
     if request.method == "GET":
-        with open('store/shop.html') as f:
+        with open('store/shop.html', encoding="utf-8") as f:
+            data = f.read()  # Читаем HTML файл
+        return HttpResponse(data)  # Отправляем HTML файл как ответ
+
+
+def coupon_check_view(request, data):
+    if request.method == "GET":
+        if data == "coupon":
+            return JsonResponse({"discount": 10, "is_valid": True})
+        return HttpResponseNotFound("Неверный купон")
+
+
+def delivery_estimate_view(request):
+    if request.method == "GET":
+        data = request.GET
+        if data.get('country').lower() != 'россия':
+            return HttpResponseNotFound("Неверные данные")
+        return JsonResponse({"price": 100.00})
+
+
+def cart_view(request):
+    if request.method == "GET":
+        with open('store/cart.html', encoding="utf-8") as f:
             data = f.read()  # Читаем HTML файл
         return HttpResponse(data)  # Отправляем HTML файл как ответ
