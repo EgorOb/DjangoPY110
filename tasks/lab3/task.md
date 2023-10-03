@@ -116,3 +116,13 @@ def products_view(request):
 
 ### 3. Работа с параметрами запроса через обработчик маршрутов Django
 
+12 товаров
+
+query_params 
+
+
+logic/services - чистый python фильтрует продукты из models
+
+вызвать фильтрацию во view
+
+add in cart
