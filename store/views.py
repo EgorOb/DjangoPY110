@@ -15,6 +15,25 @@ def products_view(request):
                                                          'indent': 4})
 
 
+def products_page_view(request, page):
+    if request.method == "GET":
+        if isinstance(page, str):
+            for data in DATABASE.values():
+                if data['html'] == page:
+                    with open(f'store/products/{page}.html', encoding="utf-8") as f:
+                        data = f.read()  # Читаем HTML файл
+                    return HttpResponse(data)  # Отправляем HTML файл как ответ
+        elif isinstance(page, int):
+            # Обрабатываем условие того, что пытаемся получить страницу товара по его id
+            data = DATABASE.get(str(page))  # Получаем какой странице соответствует данный id
+            if data:
+                with open(f'store/products/{data["html"]}.html', encoding="utf-8") as f:
+                    data = f.read()
+                return HttpResponse(data)
+
+        return HttpResponse(status=404)
+
+
 def shop_view(request):
     if request.method == "GET":
         with open('store/shop.html', encoding="utf-8") as f:
