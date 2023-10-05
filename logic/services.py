@@ -4,14 +4,15 @@ from store.models import DATABASE
 
 
 def filtering_category(database: dict,
-                       category_key: [int, str],
+                       category_key: [None, str] = None,
                        ordering_key: [None, str] = None,
-                       reverse: bool = False):
+                       reverse: bool = False,
+                       ):
     """
     Функция фильтрации данных по параметрам.
 
     :param database: База данных.
-    :param category_key: Ключ для группировки категории.
+    :param category_key: [Опционально] Ключ для группировки категории. Если нет ключа, то рассматриваются все товары.
     :param ordering_key: [Опционально] Ключ по которому будет произведена сортировка результата.
     :param reverse: [Опционально] Выбор направления сортировки:
         False - сортировка по возрастанию;
@@ -19,7 +20,10 @@ def filtering_category(database: dict,
     :return: list[dict] список товаров с их характеристиками, попавших под условия фильтрации. Если нет таких элементов,
     то возвращается пустой список.
     """
-    result = [value for value in database.values() if value['category'] == category_key]
+    if category_key is not None:
+        result = [value for value in database.values() if value['category'] == category_key]
+    else:
+        result = [*database.values()]
     if ordering_key is not None:
         result.sort(key=lambda x: x[ordering_key], reverse=reverse)
     return result

@@ -14,20 +14,17 @@ def products_view(request):
             return HttpResponseNotFound("Данного продукта нет в базе данных")
 
         # Обработка фильтрации из параметров запроса
-        if category_key := request.GET.get("category"):
-            if ordering_key := request.GET.get("ordering"):
-                if request.GET.get("reverse") in ('true', 'True'):
-                    data = filtering_category(DATABASE, category_key, ordering_key, True)
-                else:
-                    data = filtering_category(DATABASE, category_key, ordering_key)
+        category_key = request.GET.get("category")
+        if ordering_key := request.GET.get("ordering"):
+            if request.GET.get("reverse") in ('true', 'True'):
+                data = filtering_category(DATABASE, category_key, ordering_key, True)
             else:
-                data = filtering_category(DATABASE, category_key)
-            # В этот раз добавляем параметр safe=False, для корректного отображения списка в JSON
-            return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False,
-                                                                     'indent': 4})
-
-        return JsonResponse(DATABASE, json_dumps_params={'ensure_ascii': False,
-                                                         'indent': 4})
+                data = filtering_category(DATABASE, category_key, ordering_key)
+        else:
+            data = filtering_category(DATABASE, category_key)
+        # В этот раз добавляем параметр safe=False, для корректного отображения списка в JSON
+        return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False,
+                                                                 'indent': 4})
 
 
 def products_page_view(request, page):
