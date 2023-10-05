@@ -207,7 +207,7 @@ def products_page_view(request, page):
             # То, что было ранее для обработки типа slug
         elif isinstance(page, int):
             data = DATABASE.get(str(page))  # Получаем какой странице соответствует данный id
-            if data:
+            if data:  # Если по данному page было найдено значение 
                 # 1. Откройте файл open(f'store/products/{data["html"]}.html', encoding="utf-8") (Не забываем про контекстный менеджер with)
                 # 2. Прочитайте его содержимое
                 # 3. Верните HttpResponse c содержимым html файла
@@ -217,9 +217,275 @@ def products_page_view(request, page):
 
 Теперь можно обратиться по адресу http://127.0.0.1:8000/product/9 , который вернет товар "Лук"
 
+### 4. Фильтрация продуктов
 
-logic/services - чистый python фильтрует продукты из models
+Если зайти на главную страницу, http://127.0.0.1:8000/ , то можно увидеть разделы для групп товаров.
 
-вызвать фильтрацию во view
+![img_3.png](img_3.png)
 
-add in cart
+Нашей текущей задачей будет реализовать фильтрацию, но реализуем мы её со стороны сервера, а визуальной реализацией займемся на следующей практике.
+
+Что необходимо будет сделать:
+
+Создадим папку `logic` в корне проекта (в папке DjangoPy110). В папке `logic` создадим файл `services.py` в нём мы будем
+писать скрипты обработки данных.
+
+В файле `services.py` напишем функцию `filtering_category` которая будет возвращать список товаров(список словарей с параметрами товаров)
+выполняющие условия фильтрации. Ниже приведен шаблон данной функции, которую необходимо заполнить. Также приведен тестирующий пример, 
+для проверки правильности работы.
+
+```python
+def filtering_category(database: dict,
+                       category_key: [int, str],
+                       ordering_key: [None, str] = None,
+                       reverse: bool = False):
+    """
+    Функция фильтрации данных по параметрам
+
+    :param database: База данных
+    :param category_key: Ключ для группировки категории
+    :param ordering_key: [Опционально] Ключ по которому будет произведена сортировка результата
+    :param reverse: [Опционально] Выбор направления сортировки:
+        False - сортировка по возрастанию;
+        True - сортировка по убыванию.
+    :return: list[dict] список товаров с их характеристиками, попавших под условия фильтрации. Если нет таких элементов,
+    то возвращается пустой список
+    """
+    result = ...  #  При помощи фильтрации в list comprehension профильтруйте товары по категории. Или можете использовать
+    # обычный цикл или функцию filter
+    if ordering_key is not None:
+        ... #  Проведите сортировку result по ordering_key и параметру reverse
+    return result
+
+
+if __name__ == "__main__":
+    from store.models import DATABASE
+
+    test = [
+        {'name': 'Клубника', 'discount': None, 'price_before': 500.0, 'price_after': 500.0,
+         'description': 'Сладкая и ароматная клубника, полная витаминов, чтобы сделать ваш день ярче.',
+         'category': 'Фрукты', 'id': 2, 'url': 'store/images/product-2.jpg', 'html': 'strawberry'
+         },
+
+        {'name': 'Яблоки', 'discount': None, 'price_before': 130.0, 'price_after': 130.0,
+         'description': 'Сочные и сладкие яблоки - идеальная закуска для здорового перекуса.',
+         'category': 'Фрукты', 'id': 10, 'url': 'store/images/product-10.jpg', 'html': 'apple'
+         }
+    ]
+
+    print(filtering_category(DATABASE, 'Фрукты', 'price_after', True) == test)  # True
+```
+
+Далее допишем представление `products_view` во `views.py` приложения `store`.
+
+Во `views.py` приложения `store` импортируйте `filtering_category` из `logic.services`
+
+Ниже приведена заготовка с разветвлениями, которую необходимо заполнить для корректной работы. В целом необходимо правильно
+прописать значения в переменной `data` в ветке `if category_key := request.GET.get("category"):`. 
+Ветку `if id_product := request.GET.get("id"):` вы уже реализовывали ранее.
+
+
+```python
+def products_view(request):
+    if request.method == "GET":
+        # Обработка id из параметров запроса (уже было реализовано ранее)
+        if id_product := request.GET.get("id"):
+            if data := DATABASE.get(id_product):
+                return JsonResponse(data, json_dumps_params={'ensure_ascii': False,
+                                                             'indent': 4})
+            return HttpResponseNotFound("Данного продукта нет в базе данных")
+
+        # Обработка фильтрации из параметров запроса
+        if category_key := request.GET.get("category"):  # Если в параметрах есть 'category' 
+            if ordering_key := request.GET.get("ordering"): # Если в параметрах есть 'category' и 'ordering'
+                if request.GET.get("reverse") in ('true', 'True'): # Если в параметрах есть 'category' и 'ordering' и 'reverse'=True
+                    data = ... #  Провести фильтрацию с параметрами
+                else:
+                    data = ... #  Провести фильтрацию с параметрами
+            else:
+                data = ... #  Провести фильтрацию с параметрами
+            # В этот раз добавляем параметр safe=False, для корректного отображения списка в JSON
+            return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False,
+                                                                     'indent': 4})
+
+        return JsonResponse(DATABASE, json_dumps_params={'ensure_ascii': False,
+                                                         'indent': 4})
+```
+
+Проверьте работу вашего представления:
+
+* http://127.0.0.1:8000/product?category=Фрукты&ordering=price_after&reverse=True
+
+
+* http://127.0.0.1:8000/product?category=Фрукты&ordering=price_after
+
+
+* http://127.0.0.1:8000/product?category=Овощи
+
+Можете самостоятельно придумать параметры для фильтрации и протестировать их или в ручном режиме (адресная строка браузера)
+или при помощи `requests` или `curl`
+
+### 5. Работа с корзиной товаров
+
+Товары есть, фильтрация есть, можно даже каждый товар открыть посмотреть на него. 
+
+Настало время добавить товар в корзину!
+
+Однако мы с вами снова пойдём реализации со стороны серверной части, а отображение в HTML оставим на следующую практику.
+
+В отличии, от корзины - база данных наших товаров не меняется со временем. В корзину как добавляют товары, 
+так и удаляют из нёё. 
+
+Желательно чтобы от перезапуска сервера наша корзина не приходила в начальное состояние(пустая),
+а сохраняла то, что мы туда положили ранее.
+
+Поэтому в этот раз воспользуемся файлом в виде базы данных в которой будем хранить нашу информацию. Хранить 
+информацию будем в файле `cart.json`.
+
+В файле `services.py` напишем функции `view_in_cart`, `add_to_cart`, `remove_from_cart`  которые реализуют действия по
+просмотру, добавлению и удалению товаров из корзины. 
+
+Функция `view_in_cart` уже реализована, необходимо дописать 
+`add_to_cart`, `remove_from_cart`
+
+```python
+import json
+import os
+from store.models import DATABASE
+
+
+def view_in_cart() -> dict:
+    """
+    Просматривает содержимое cart.json
+
+    :return: Содержимое 'cart.json'
+    """
+    if os.path.exists('cart.json'):  # Если файл существует
+        with open('cart.json', encoding='utf-8') as f:
+            return json.load(f)
+
+    cart = {'products': {}}  # Создаём пустую корзину
+    with open('cart.json', mode='x', encoding='utf-8') as f:   # Создаём файл и записываем туда пустую корзину
+        json.dump(cart, f)
+
+    return cart
+
+
+def add_to_cart(id_product: str) -> bool:
+    """
+    Добавляет продукт в корзину. Если в корзине нет данного продукта, то добавляет его с количеством равное 1.
+    Если в корзине есть такой продукт, то добавляет количеству данного продукта + 1.
+
+    :param id_product: Идентификационный номер продукта в виде строки.
+    :return: Возвращает True в случае успешного добавления, а False в случае неуспешного добавления(товара по id_product
+    не существует).
+    """
+    cart = ...  # Помните, что у вас есть уже реализация просмотра корзины,
+    # поэтому, чтобы загрузить данные из корзины, не нужно заново писать код.
+
+    # Проверьте, а существует ли такой товар в корзине, если нет, то перед тем как его добавить - проверьте есть ли такой
+    # id товара в вашей базе данных DATABASE, чтобы уберечь себя от добавления несуществующего товара.
+
+    # Если товар существует, то увеличиваем его количество на 1
+
+    # Не забываем записать обновленные данные cart в 'cart.json'
+
+    return True
+
+
+def remove_from_cart(id_product: str) -> bool:
+    """
+    Добавляет позицию продукта из корзины. Если в корзине есть такой продукт, то удаляется ключ в словаре
+    с этим продуктом.
+
+    :param id_product: Идентификационный номер продукта в виде строки.
+    :return: Возвращает True в случае успешного удаления, а False в случае неуспешного удаления(товара по id_product
+    не существует).
+    """
+    cart = ...  # Помните, что у вас есть уже реализация просмотра корзины,
+    # поэтому, чтобы загрузить данные из корзины, не нужно заново писать код.
+
+    # Проверьте, а существует ли такой товар в корзине, если нет, то возвращаем False.
+
+    # Если существует товар, то удаляем ключ 'id_product' у cart['products'].
+
+    # Не забываем записать обновленные данные cart в 'cart.json'
+
+    return True
+
+
+if __name__ == "__main__":
+    # Проверка работоспособности функций view_in_cart, add_to_cart, remove_from_cart
+    # Для совпадения выходных значений перед запуском скрипта удаляйте появляющийся файл 'cart.json' в папке
+    print(view_in_cart())  # {'products': {}}
+    print(add_to_cart('1'))  # True
+    print(add_to_cart('0'))  # False
+    print(add_to_cart('1'))  # True
+    print(add_to_cart('2'))  # True
+    print(view_in_cart())  # {'products': {'1': 2, '2': 1}}
+    print(remove_from_cart('0'))  # False
+    print(remove_from_cart('1'))  # True
+    print(view_in_cart())  # {'products': {'2': 1}}
+```
+
+Финалом практики будет составление представления, которое будет обрабатывать запросы и работать с `cart.json`
+
+Какие представления нам нужны? Те, что будут обрабатывать 3 функции, поэтому создадим 3 представления во `views.py` 
+приложения `store`. 
+
+* `cart_view` - возвращает JSON с корзиной
+
+
+* `cart_add_view` - добавляет в корзину товар по его `id_product`
+
+
+* `cart_del_view` - удаляет товар из корзины по его `id_product`
+
+Используйте и заполните предложенный шаблон
+
+```python
+from logic.services import view_in_cart, add_to_cart, remove_from_cart
+
+
+def cart_view(request):
+    if request.method == "GET":
+        data = ... # Вызвать ответственную за это действие функцию
+        return JsonResponse(data, json_dumps_params={'ensure_ascii': False,
+                                                     'indent': 4})
+
+
+def cart_add_view(request, id_product):
+    if request.method == "GET":
+        result = ... # Вызвать ответственную за это действие функцию
+        if result:
+            return JsonResponse({"answer": "Продукт успешно добавлен в корзину"},
+                                json_dumps_params={'ensure_ascii': False})
+
+        return JsonResponse({"answer": "Неудачное добавление в корзину"},
+                            status=404,
+                            json_dumps_params={'ensure_ascii': False})
+
+
+def cart_del_view(request, id_product):
+    if request.method == "GET":
+        result = ... # Вызвать ответственную за это действие функцию
+        if result:
+            return JsonResponse({"answer": "Продукт успешно удалён из корзины"},
+                                json_dumps_params={'ensure_ascii': False})
+
+        return JsonResponse({"answer": "Неудачное удаление из корзины"},
+                            status=404,
+                            json_dumps_params={'ensure_ascii': False})
+```
+
+Осталось только прописать маршруты в `urls.py` приложения `store`. Строковый тип `id_product` передаём за счет `str`
+
+```python
+    path('cart/', cart_view),
+    path('cart/add/<str:id_product>', cart_add_view),
+    path('cart/del/<str:id_product>', cart_del_view),
+```
+
+Протестируйте правильность выполнения запросов.
+
+### Практика окончена.
