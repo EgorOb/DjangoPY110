@@ -63,15 +63,20 @@ def shop_view(request):
                                "category": category_key})
 
 
-
-
-
-
 def cart_view(request):
     if request.method == "GET":
         data = view_in_cart()
-        return JsonResponse(data, json_dumps_params={'ensure_ascii': False,
-                                                     'indent': 4})
+        if request.GET.get('format') == 'JSON':
+            return JsonResponse(data, json_dumps_params={'ensure_ascii': False,
+                                                         'indent': 4})
+        products = []  # Список продуктов
+        for product_id, quantity in data['products'].items():
+            product = DATABASE.get(product_id)
+            product["quantity"] = quantity
+            product["price_total"] = f"{quantity * product['price_after']:.2f}"
+            products.append(product)
+
+        return render(request, "store/cart.html", context={"products": products})
 
 
 def cart_add_view(request, id_product):
