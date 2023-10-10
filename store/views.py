@@ -43,6 +43,35 @@ def products_page_view(request, page):
         return HttpResponse(status=404)
 
 
+def products_page_view(request, page):  # для решения последней доп. задачи
+    limit = 5
+    if request.method == "GET":
+        if isinstance(page, str):
+            for data in DATABASE.values():
+                if data['html'] == page:
+                    data_category = filter(
+                        lambda x: x["id"] != data['id'],
+                        filtering_category(DATABASE, data['category']))
+                    return render(request, "store/product.html", context={"product": data,
+                                                                          "products_category": list(data_category)[:limit]})
+
+        elif isinstance(page, int):
+            # Обрабатываем условие того, что пытаемся получить страницу товара по его id
+            data = DATABASE.get(str(page))  # Получаем какой странице соответствует данный id
+            if data:
+                data_category = filter(
+                    lambda x: x["id"] != data['id'],
+                    filtering_category(DATABASE, data['category']))
+                return render(request, "store/product.html",
+                              context={"product": data,
+                                       "products_category": list(data_category)[:limit]})
+
+        return HttpResponse(status=404)
+
+
+
+
+
 def shop_view(request):
     if request.method == "GET":
         # Обработка фильтрации из параметров запроса
