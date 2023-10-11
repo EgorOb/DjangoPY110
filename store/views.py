@@ -53,7 +53,8 @@ def products_page_view(request, page):  # для решения последне
                         lambda x: x["id"] != data['id'],
                         filtering_category(DATABASE, data['category']))
                     return render(request, "store/product.html", context={"product": data,
-                                                                          "products_category": list(data_category)[:limit]})
+                                                                          "products_category": list(data_category)[
+                                                                                               :limit]})
 
         elif isinstance(page, int):
             # Обрабатываем условие того, что пытаемся получить страницу товара по его id
@@ -67,9 +68,6 @@ def products_page_view(request, page):  # для решения последне
                                        "products_category": list(data_category)[:limit]})
 
         return HttpResponse(status=404)
-
-
-
 
 
 def shop_view(request):
@@ -129,16 +127,42 @@ def cart_del_view(request, id_product):
                             json_dumps_params={'ensure_ascii': False})
 
 
-def coupon_check_view(request, data):
+def coupon_check_view(request, name_coupon):
+    # DATA_COUPON - база данных купонов: ключ - код купона (name_coupon); значение - словарь со значением скидки в процентах и
+    # значением действителен ли купон или нет
+    DATA_COUPON = {
+        "coupon": {
+            "value": 10,
+            "is_valid": True},
+        "coupon_old": {
+            "value": 20,
+            "is_valid": False},
+    }
     if request.method == "GET":
-        if data == "coupon":
-            return JsonResponse({"discount": 10, "is_valid": True})
+        # Проверьте, что купон есть в DATA_COUPON, если он есть, то верните JsonResponse в котором по ключу "discount"
+        # получают значение скидки в процентах, а по ключу "is_valid" понимают действителен ли купон или нет (True, False)
+
+        # Если купона нет в базе, то верните HttpResponseNotFound("Неверный купон")
+        if name_coupon in DATA_COUPON:
+            coupon = DATA_COUPON[name_coupon]
+            return JsonResponse({"discount": coupon["value"], "is_valid": coupon["is_valid"]})
         return HttpResponseNotFound("Неверный купон")
 
 
 def delivery_estimate_view(request):
+    # База данных по стоимости доставки. Ключ - Страна; Значение словарь с городами и ценами; Значение с ключом fix_price
+    # применяется если нет города в данной стране
+    DATA_PRICE = {
+        "Россия": {
+            "Москва": {"price": 80},
+            "Санкт-Петербург": {"price": 80},
+            "fix_price": 100,
+        },
+    }
     if request.method == "GET":
         data = request.GET
-        if data.get('country').lower() != 'россия':
-            return HttpResponseNotFound("Неверные данные")
-        return JsonResponse({"price": 100.00})
+        if country := DATA_PRICE.get(data.get('country')):
+            if city := country.get(data.get('city')):
+                return JsonResponse({"price": city["price"]})
+            return JsonResponse({"price": country["fix_price"]})
+        return HttpResponseNotFound("Неверные данные")
