@@ -33,6 +33,22 @@
     <link rel="stylesheet" href="{% static 'store/css/flaticon.css' %}">
     <link rel="stylesheet" href="{% static 'store/css/icomoon.css' %}">
     <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+
+    <style>
+        .custom-popup-message {
+            display: none;
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+    </style>
     {% endblock %}
 </head>
 <body class="goto-here">
