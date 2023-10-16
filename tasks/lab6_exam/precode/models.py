@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-
+# Обновленная база данных с учетом возможного добавления нового пользователя
 DATABASE = [{"user": "user", "date": datetime(2023, 10, 16), "event": "Поход в театр"},
             {"user": "user", "date": datetime(2023, 10, 17), "event": "Встреча с коллегой"},
             {"user": "user", "date": datetime(2023, 10, 19), "event": "Поход в кино"},
@@ -15,27 +15,15 @@ def add_event(event_date: datetime, event_name: str, user: str) -> datetime:
     :param user: имя пользователя
     :return: дату когда в итоге добавили событие
     """
-    user_exists = any(entry["user"] == user for entry in DATABASE)
 
-    if not user_exists:
-        # Если пользователя нет в БД, создаем запись с его исходными данными
-        DATABASE.append({"user": user, "date": event_date, "event": event_name})
-        return event_date
+    # TODO Если пользователя нет в БД, создаем запись с его исходными данными {"user": ..., "date": ..., "event": ...}
 
-    for i, entry in enumerate(DATABASE):
-        if event_date < entry["date"] and user == entry["user"]:
-            # Ищем когда дата нового события будет явно меньше даты в текущем индексе
-            DATABASE.insert(i, {"user": user, "date": event_date, "event": event_name})
+    for i, entry in enumerate(DATABASE):  # Перебор по всем датам календаря
+        if event_date < entry["date"]:  # TODO Помнить что теперь есть еще условие про прользователя
+            DATABASE.insert(i, {"date": event_date, "event": event_name})  # TODO Добавить "user" в словарь
             return event_date
-        if user == entry["user"]:
-            event_date += timedelta(days=1)
+        event_date += timedelta(days=1)  # TODO Доработать код, для обработки пользователя. Помним смещение события может быть только
+    #  в строках относящихся к причастному пользователю
 
-    DATABASE.append({"user": user, "date": event_date, "event": event_name})
+    DATABASE.append({"date": event_date, "event": event_name})  # TODO Добавить "user" в словарь
     return event_date
-
-# print(add_event(datetime(2023, 10, 16), "1", user="user"), DATABASE)
-# print(add_event(datetime(2023, 10, 16), "2", user="user"), DATABASE)
-# print(add_event(datetime(2023, 10, 16), "2", user="user1"), DATABASE)
-# print(add_event(datetime(2023, 10, 16), "3", user="user1"), DATABASE)
-# print(add_event(datetime(2023, 10, 16), "3", user="user1"), DATABASE)
-# print(add_event(datetime(2023, 10, 15), "3", user="user1"), DATABASE)

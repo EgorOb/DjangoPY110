@@ -23,5 +23,5 @@ register_converter(DateConverter, 'date')
 
 
 urlpatterns = [
-    path('event/<slug:user>/<slug:event>/<date:dt>', DateView.as_view()),
+    ..., # TODO составить path, используя преобразователь маршрутов для даты и для получения username
 ]

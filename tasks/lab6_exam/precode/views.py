@@ -1,11 +1,11 @@
 from django.http import HttpResponse, HttpRequest
 from datetime import datetime
 from django.views import View
-from .models import add_event
+# TODO импортируйте функцию add_event
 
 
 class DateView(View):
 
-    def get(self, request: HttpRequest, user: str, event: str, dt: datetime) -> HttpResponse:
-        date = add_event(dt, event, user).strftime('%Y-%m-%d')  # Приведем наш datetime к виду YYYY-MM-DD для вывода
-        return HttpResponse(f"Событие {event} добавлено в календарь для {user} на дату: {date}")
+    def get(self, request: HttpRequest, event: str, dt: datetime) -> HttpResponse: # TODO метод должен дополнительно принимать username
+        date = ...  # TODO примените функцию add_event и преобразуйте к строковому представлению вида YYYY-MM-DD
+        return HttpResponse(f"Событие {event} добавлено в календарь для {...} на дату: {date}") # TODO передайте имя пользователя
