@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, register_converter
 from random import random
 from django.http import HttpResponse
 from app_datetime.views import datetime_view
@@ -26,6 +26,20 @@ def random_view(request):
         data = random()
         return HttpResponse(data)
 
+class ListConverter:
+    """ Пользовательский конвертер маршрутов. """
+    regex = r"(?:[a-z-]+)"
+    def to_python(self, value: str):
+        return list(value.split("-"))
+
+    def to_url(self, value: list):
+        return "-".join(value)
+
+register_converter(ListConverter, 'list')
+
+def func(request, data):
+    print(1)
+    return HttpResponse(data)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,4 +47,7 @@ urlpatterns = [
     path('datetime/', datetime_view),
     path('weather/', include('app_weather.urls')),
     path('', include('store.urls')),
+    path('login/', include('app_login.urls')),
+    path('login/', include('app_login.urls')),
+    path('a/<list:data>', func),
 ]

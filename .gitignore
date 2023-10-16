@@ -1,4 +1,4 @@
 venv
 .idea
 *.sqlite3
-cart.json
+*.json
