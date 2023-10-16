@@ -14,33 +14,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include, register_converter
-from random import random
-from django.http import HttpResponse
-from app_datetime.views import datetime_view
+from django.urls import path, register_converter
 from .views import DateView
 from .converters import DateConverter
-
-def random_view(request):
-    if request.method == "GET":
-        data = random()
-        return HttpResponse(data)
 
 
 register_converter(DateConverter, 'date')
 
-def func(request, data):
-    print(1)
-    return HttpResponse(data)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('random/', random_view),
-    path('datetime/', datetime_view),
-    path('weather/', include('app_weather.urls')),
-    path('', include('store.urls')),
-    path('login/', include('app_login.urls')),
-    path('login/', include('app_login.urls')),
     path('event/<slug:user>/<slug:event>/<date:dt>', DateView.as_view()),
 ]
