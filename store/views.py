@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse, HttpResponseNotFound
 from .models import DATABASE
-from logic.services import filtering_category, view_in_cart, add_to_cart, remove_from_cart, show_user, authentication_required
+from logic.services import filtering_category, view_in_cart, add_to_cart, remove_from_cart
+from logic.auth import show_user#, authentication_required
 
 
 def products_view(request):
@@ -69,16 +70,16 @@ def products_page_view(request, page):  # для решения последне
 
         return HttpResponse(status=404)
 
-@show_user
+
 # @authentication_required('login:login_view')
+@show_user
 def shop_view(request):
     if request.method == "GET":
         # Обработка фильтрации из параметров запроса
         category_key = request.GET.get("category")
         if ordering_key := request.GET.get("ordering"):
             if request.GET.get("reverse") in ('true', 'True'):
-                data = filtering_category(DATABASE, category_key, ordering_key,
-                                          True)
+                data = filtering_category(DATABASE, category_key, ordering_key, True)
             else:
                 data = filtering_category(DATABASE, category_key, ordering_key)
         else:
@@ -87,11 +88,12 @@ def shop_view(request):
                       context={"products": data,
                                "category": category_key})
 
+# @show_user
+# @authentication_required('login:login_view')
 @show_user
-@authentication_required('login:login_view')
 def cart_view(request):
     if request.method == "GET":
-        data = view_in_cart()[request.user.username]
+        data = view_in_cart()#[request.user.username]
         if request.GET.get('format') == 'JSON':
             return JsonResponse(data, json_dumps_params={'ensure_ascii': False,
                                                          'indent': 4})
@@ -104,7 +106,7 @@ def cart_view(request):
 
         return render(request, "store/cart.html", context={"products": products})
 
-@authentication_required("login:login_view")
+# @authentication_required("login:login_view")
 def cart_buy_now_view(request, id_product):
     if request.method == "GET":
         result = add_to_cart(id_product)
@@ -121,7 +123,7 @@ def cart_remove_view(request, id_product):
 
         return HttpResponseNotFound("Неудачное удаление из корзины")
 
-@authentication_required("login:login_view")
+# @authentication_required("login:login_view")
 def cart_add_view(request, id_product):
     if request.method == "GET":
         result = add_to_cart(id_product)
