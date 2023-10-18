@@ -93,7 +93,7 @@ def shop_view(request):
 @show_user
 def cart_view(request):
     if request.method == "GET":
-        data = view_in_cart()#[request.user.username]
+        data = view_in_cart()[request.user.username]
         if request.GET.get('format') == 'JSON':
             return JsonResponse(data, json_dumps_params={'ensure_ascii': False,
                                                          'indent': 4})
