@@ -26,7 +26,7 @@ def signup_view(request):
                                                 password1=data["password1"], password2=data["password2"])
         if result["answer"]:
             add_to_users_database(username=data["username"], email=data["email"], password=data["password1"])
-            # authenticate(data["username"])
+            authenticate(data["username"])
             return redirect("/")
         return render(request, "login/signup.html", context={"error": result["error"]})
 
