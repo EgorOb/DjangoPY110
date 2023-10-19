@@ -181,7 +181,7 @@
 		linkCart.disabled = true;
 
 		// Отправляем асинхронный GET-запрос на сервер для проверки купона
-		fetch('http://127.0.0.1:8000/cart/add/' + productId, {
+		fetch('/cart/add/' + productId, {
 			method: 'GET'
 		})
 		.then(function(response) {
