@@ -564,7 +564,7 @@ def logout_view(request):
 from django.contrib.auth import get_user
 ```
 Но для работы `get_user` необходимо на вход подать `request`, поэтому в `view_in_cart`, `add_to_cart`, 
-`remove_from_cart` на вроде также подавим request, так как в них необходимо будет знать какой пользователь сейчас в магазине.
+`remove_from_cart` на входе также подадим `request`, так как в функциях необходимо будет знать какой пользователь сейчас в магазине.
 
 Во `view_in_cart` замените прошлую пустую корзину на `{user: {'products': {}}}`
 
