@@ -435,7 +435,7 @@ python manage.py createsuperuser
 
 Если пароль будет слабый по защите, то появится вопрос, с уверенностью создания такого слабого пароля. Введите `y`
 
-![img.png](img.png)
+![img.png](pic_for_task/img_n1.png)
 
 Затем ваш пользователь будет создан. Но не будет авторизован в системе, т.е. сервер не понимает, что именно данный пользователь
 сейчас на сайте.
@@ -578,7 +578,7 @@ cart = {user: {'products': {}}}  # стало
 
 Также на вход `view_in_cart` передадим `request`
 
-![img_2.png](img_2.png)
+![img_2.png](pic_for_task/img_n2.png)
 
 
 В `add_to_cart` произведем замену, чтобы получить корзину авторизированного пользователя.
@@ -630,7 +630,7 @@ def add_user_to_cart(request, username: str) -> None:
 
 В приложении `app_login` во `views.py` в отображении `login_view` вызовем `add_user_to_cart` после авторизации пользователя
 
-![img_1.png](img_1.png)
+![img_1.png](pic_for_task/img_n3.png)
 
 Логику мы настроили. Теперь осталось во `views.py` поменять приложения `store` поправить представление `cart_view`
 
