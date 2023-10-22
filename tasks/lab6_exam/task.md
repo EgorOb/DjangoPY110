@@ -86,16 +86,18 @@ urlpatterns = [
 ![img_1.png](img_1.png)
 
 База будет храниться в `wishlist.json` аналогично, как и в `cart.json` поэтому можете смело продублировать обработчики 
-`view_in_cart`, `add_to_cart`, `remove_from_cart` из `logic/services.py`. Данные обработчики переименуйте, чтобы было понятно,
+`view_in_cart`, `add_to_cart`, `remove_from_cart`, `add_user_to_cart` из `logic/services.py`. Данные обработчики переименуйте, чтобы было понятно,
 что происходит работа с избранным и внутреннее содержание поменяйте, чтобы понятно, что это не для корзины, а для избранного.
 
-После создания `view_in_wishlist`, `add_to_wishlist`, `remove_from_wishlist` в `logic/services.py` далее допишите представление `wishlist_view`
-во `views.py` приложения `wishlist`. Необходимо, чтобы в шаблон `wishlist.html` передавались продукты, что находятся в избранном.
+После создания `view_in_wishlist`, `add_to_wishlist`, `remove_from_wishlist`, `add_user_to_wishlist` в `logic/services.py` далее допишите представление `wishlist_view`
+во `views.py` приложения `wishlist`. 
+Необходимо, чтобы в шаблон `wishlist.html` передавались продукты, что находятся в избранном.
 Получить эти продукты вы можете из написанной вами функции `view_in_wishlist` из `logic/services.py`.
 
 ```python
 def wishlist_view(request):
     if request.method == "GET":
+        current_user = get_user(request).username
         data = ... # TODO получить продукты из избранного для пользователя
         
         products = []
@@ -104,20 +106,149 @@ def wishlist_view(request):
         return render(request, 'wishlist/wishlist.html', context={"products": products})
 ```
 
+По аналогии с корзиной добавьте пользователя в базу избранное при авторизации в представлении `login_view` приложения 
+`app_login`.
+
+```python
+def login_view(request):
+    if request.method == "GET":
+        return render(request, "login/login.html")
+
+    if request.method == "POST":
+        data = request.POST
+        user = authenticate(username=data["username"], password=data["password"])
+        if user:
+            login(request, user)
+            add_user_to_cart(request, user.username)
+            ...  # TODO добавить пользователя в базу избранное
+            return redirect("/")
+        return render(request, "login/login.html", context={"error": "Неверные данные"})
+```
+
+#### Этап4. Отобразите продукты в избранном
+
+С использованием языка шаблонов (`{%for%}`, `{%if%}`, `{%url%}`) отобразите информацию в избранном. Посмотрите на HTML файл wishlist и разберитесь
+какие данные там требуются. 
+
+![img_2.png](img_2.png)
+
+Все поля которые характеризуют товар вы можете посмотреть в словаре `DATABASE` файла `models.py` приложения `store`.
+
+При нажатии на картинку происходит переход на товар, так что не забудьте это реализовать при помощи `{% url %}`.
+Обработчик уже был написан ранее в `urls.py` приложения `store`. 
+
+![img_3.png](img_3.png)
 
 
-#### Этап4. Настройте добавление и удаление продукта в избранное
+На данном этапе будет пустая корзина избранного, так как ничего пока не добавляли в избранное.
+
+#### Этап5. Настройте добавление и удаление продукта в избранное
+
+
+```html
+<script>
+	// Переключение сердечка избранного
+	function toggleWishlistState(event) {
+		event.preventDefault();
+		const linkWish = event.target;
+		const productId = linkWish.getAttribute('data-product-id');
+		const currentState = linkWish.getAttribute('data-state');
+
+		linkWish.disabled = true;
+
+		if (currentState === 'inactive') {
+			// Отправить запрос на добавление в избранное
+			fetch('/wishlist/api/add/' + productId, { method: 'GET' })
+				.then(function (response) {
+					if (response.ok) {
+						showPopupMessage(productId, 'Продукт успешно добавлен в избранное');
+						linkWish.classList.remove('ion-ios-heart-empty');
+						linkWish.classList.add('ion-ios-heart');
+						linkWish.setAttribute('data-state', 'active');
+					}
+				})
+				.catch(function (error) {
+					console.error(error);
+				})
+				.finally(function () {
+					linkWish.disabled = false;
+				});
+		} else {
+			// Отправить запрос на удаление из избранного
+			fetch('/wishlist/api/del/' + productId, { method: 'GET' })
+				.then(function (response) {
+					if (response.ok) {
+						showPopupMessage(productId, 'Продукт успешно удалён из избранного');
+						linkWish.classList.remove('ion-ios-heart');
+						linkWish.classList.add('ion-ios-heart-empty');
+						linkWish.setAttribute('data-state', 'inactive');
+					}
+				})
+				.catch(function (error) {
+					console.error(error);
+				})
+				.finally(function () {
+					linkWish.disabled = false;
+				});
+		}
+	}
+
+	const addButtonsHeart = document.querySelectorAll('.heart');
+	addButtonsHeart.forEach(function (button) {
+		button.addEventListener('click', toggleWishlistState);
+	});
+</script>
+<script>
+	function showHearts(favoriteProducts) {
+		// Проходим по всем ссылкам с классом "heart" и изменяем классы:
+		let addButtonsHeart1 = document.querySelectorAll('.heart');
+		addButtonsHeart1.forEach(function(button) {
+			let productId = button.querySelector('i').getAttribute('data-product-id');
+
+			// Если data-product-id товара есть в списке избранных, меняем классы
+			if (favoriteProducts.includes(productId)) {
+				let icon = button.querySelector('.ion-ios-heart-empty');
+				if (icon) {
+					icon.classList.remove('ion-ios-heart-empty');
+					icon.classList.add('ion-ios-heart');
+					icon.setAttribute('data-state', 'active');
+				}
+			}
+
+		});
+	}
+	// Отправляем запрос на получение всех товаров в избранном
+	fetch('/wishlist/api/', {
+			method: 'GET'
+		})
+		.then(function(response) {
+			// Проверяем статус ответа
+			if (!response.ok) {
+				throw new Error('Ошибка');
+			}
+			return response.json();
+		})
+		.then(function(data) {
+			// Обрабатываем данные, которые пришли с сервера
+			let favoriteProducts = data.products
+			showHearts(favoriteProducts);
+		})
+		.catch(function(error) {
+			// Обрабатываем ошибку
+			console.error(error);
+		});
+
+</script>
+```
 
 
 
-#### Этап5. Разграничение доступа пользователя
+#### Этап6. Разграничение доступа пользователя
 
 Сделайте так, чтобы добавить и зайти в избранное можно было только авторизированному пользователя. 
-Посмотрите как была сделана аналогичная задача с корзиной.
+Посмотрите как была сделана аналогичная задача с корзиной при помощи декоратора `login_required`.
 
-Не забудьте проконтролировать, что при создании нового пользователя у него должна образоваться запись в базе про его список избранного.
-Аналогично как с корзиной.
+#### Этап7. Проверьте результат работы вашего нового функционала
 
 
-#### Этап6. Проверьте результат работы вашего нового функционала
-
+#### Этап8. Сделайте все необходимые коммиты, отправьте их на github и отправьте ссылку на ваш проект своему преподавателю по практике
