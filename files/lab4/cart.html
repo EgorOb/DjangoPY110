@@ -415,7 +415,7 @@
     		checkCouponButton.disabled = true;
 
 			// Отправляем асинхронный GET-запрос на сервер для проверки купона
-			fetch('http://127.0.0.1:8000/coupon/check/' + couponCode, {
+			fetch('/coupon/check/' + couponCode, {
 				method: 'GET'
 			})
 			.then(function(response) {
@@ -471,7 +471,7 @@
     		estimateButton.disabled = true;
 
 			// Отправляем асинхронный GET-запрос на сервер для расчёта стоимости доставки
-			fetch('http://127.0.0.1:8000/delivery/estimate?country=' + country + '&city=' + city + '&code=' + code, {
+			fetch('/delivery/estimate?country=' + country + '&city=' + city + '&code=' + code, {
 				method: 'GET'
 			})
 			.then(function(response) {
