@@ -85,11 +85,11 @@
 								<a href="#" id="add-to-cart" class="add-to-cart d-flex justify-content-center align-items-center text-center" data-product-id="{{product.id}}">
 									<span><i class="ion-ios-add-circle-outline" data-product-id="{{product.id}}"></i></span>
 								</a>
-								<a href="{% url 'store:buy_now' product.id %}" class="buy-now d-flex justify-content-center align-items-center mx-1">
+								<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
 									<span><i class="ion-ios-cart"></i></span>
 								</a>
-								<a href="#" class="heart d-flex justify-content-center align-items-center ">
-									<span><i class="ion-ios-heart"></i></span>
+								<a href="#" class="heart d-flex justify-content-center align-items-center">
+									<span><i class="ion-ios-heart-empty" data-product-id="{{product.id}}" data-state="inactive" data-action="toggle"></i></span>
 								</a>
 							</div>
 							<div class="custom-popup-message" data-product-id="{{product.id}}"></div>
