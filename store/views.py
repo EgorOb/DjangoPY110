@@ -82,18 +82,3 @@ def cart_del_view(request, id_product):
         return JsonResponse({"answer": "Неудачное удаление из корзины"},
                             status=404,
                             json_dumps_params={'ensure_ascii': False})
-
-
-def coupon_check_view(request, data):
-    if request.method == "GET":
-        if data == "coupon":
-            return JsonResponse({"discount": 10, "is_valid": True})
-        return HttpResponseNotFound("Неверный купон")
-
-
-def delivery_estimate_view(request):
-    if request.method == "GET":
-        data = request.GET
-        if data.get('country').lower() != 'россия':
-            return HttpResponseNotFound("Неверные данные")
-        return JsonResponse({"price": 100.00})

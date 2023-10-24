@@ -1,4 +1,5 @@
-Руководство и задания к 3-ей практике
+Руководство и задания к 3-ей практике. На практике поработаем с маршрутами, с параметрами запросов. 
+Поработаем с фильтрацией товаров и импровизированной корзиной покупок с выводом результатов как JSON.
 
 ### 1. Работа с вложенными маршрутами
 
@@ -141,9 +142,9 @@ def products_page_view(request, page):
     if request.method == "GET":
         for data in DATABASE.values():
             if data['html'] == page:  # Если значение переданного параметра совпадает именем html файла
-                # 1. Откройте файл open(f'store/products/{page}.html', encoding="utf-8") (Не забываем про контекстный менеджер with)
-                # 2. Прочитайте его содержимое
-                # 3. Верните HttpResponse c содержимым html файла
+                # TODO 1. Откройте файл open(f'store/products/{page}.html', encoding="utf-8") (Не забываем про контекстный менеджер with)
+                # TODO 2. Прочитайте его содержимое
+                # TODO 3. Верните HttpResponse c содержимым html файла
         
         # Если за всё время поиска не было совпадений, то значит по данному имени нет соответствующей 
         # страницы товара и можно вернуть ответ с ошибкой HttpResponse(status=404)
@@ -252,12 +253,12 @@ def filtering_category(database: dict,
     то возвращается пустой список
     """
     if category_key is not None:
-        result = ...  #  При помощи фильтрации в list comprehension профильтруйте товары по категории. Или можете использовать
+        result = ...  #  TODO При помощи фильтрации в list comprehension профильтруйте товары по категории. Или можете использовать
         # обычный цикл или функцию filter
     else:
-        result = ... #  Трансформируйте database в список словарей
+        result = ... #  TODO Трансформируйте database в список словарей
     if ordering_key is not None:
-        ... #  Проведите сортировку result по ordering_key и параметру reverse
+        ... #  TODO Проведите сортировку result по ordering_key и параметру reverse
     return result
 
 
@@ -302,11 +303,11 @@ def products_view(request):
         category_key = request.GET.get("category")  # Считали 'category' 
         if ordering_key := request.GET.get("ordering"): # Если в параметрах есть 'ordering'
             if request.GET.get("reverse") in ('true', 'True'): # Если в параметрах есть 'ordering' и 'reverse'=True
-                data = ... #  Провести фильтрацию с параметрами
+                data = ... #  TODO Провести фильтрацию с параметрами
             else:
-                data = ... #  Провести фильтрацию с параметрами
+                data = ... #  TODO Провести фильтрацию с параметрами
         else:
-            data = ... #  Провести фильтрацию с параметрами
+            data = ... #  TODO Провести фильтрацию с параметрами
         # В этот раз добавляем параметр safe=False, для корректного отображения списка в JSON
         return JsonResponse(data, safe=False, json_dumps_params={'ensure_ascii': False,
                                                                  'indent': 4})
@@ -381,15 +382,15 @@ def add_to_cart(id_product: str) -> bool:
     :return: Возвращает True в случае успешного добавления, а False в случае неуспешного добавления(товара по id_product
     не существует).
     """
-    cart = ...  # Помните, что у вас есть уже реализация просмотра корзины,
+    cart = ...  # TODO Помните, что у вас есть уже реализация просмотра корзины,
     # поэтому, чтобы загрузить данные из корзины, не нужно заново писать код.
 
-    # Проверьте, а существует ли такой товар в корзине, если нет, то перед тем как его добавить - проверьте есть ли такой
+    # TODO Проверьте, а существует ли такой товар в корзине, если нет, то перед тем как его добавить - проверьте есть ли такой
     # id товара в вашей базе данных DATABASE, чтобы уберечь себя от добавления несуществующего товара.
 
-    # Если товар существует, то увеличиваем его количество на 1
+    # TODO Если товар существует, то увеличиваем его количество на 1
 
-    # Не забываем записать обновленные данные cart в 'cart.json'
+    # TODO Не забываем записать обновленные данные cart в 'cart.json'
 
     return True
 
@@ -403,14 +404,14 @@ def remove_from_cart(id_product: str) -> bool:
     :return: Возвращает True в случае успешного удаления, а False в случае неуспешного удаления(товара по id_product
     не существует).
     """
-    cart = ...  # Помните, что у вас есть уже реализация просмотра корзины,
+    cart = ...  # TODO Помните, что у вас есть уже реализация просмотра корзины,
     # поэтому, чтобы загрузить данные из корзины, не нужно заново писать код.
 
-    # Проверьте, а существует ли такой товар в корзине, если нет, то возвращаем False.
+    # TODO Проверьте, а существует ли такой товар в корзине, если нет, то возвращаем False.
 
-    # Если существует товар, то удаляем ключ 'id_product' у cart['products'].
+    # TODO Если существует товар, то удаляем ключ 'id_product' у cart['products'].
 
-    # Не забываем записать обновленные данные cart в 'cart.json'
+    # TODO Не забываем записать обновленные данные cart в 'cart.json'
 
     return True
 
@@ -450,14 +451,14 @@ from logic.services import view_in_cart, add_to_cart, remove_from_cart
 
 def cart_view(request):
     if request.method == "GET":
-        data = ... # Вызвать ответственную за это действие функцию
+        data = ... # TODO Вызвать ответственную за это действие функцию
         return JsonResponse(data, json_dumps_params={'ensure_ascii': False,
                                                      'indent': 4})
 
 
 def cart_add_view(request, id_product):
     if request.method == "GET":
-        result = ... # Вызвать ответственную за это действие функцию
+        result = ... # TODO Вызвать ответственную за это действие функцию
         if result:
             return JsonResponse({"answer": "Продукт успешно добавлен в корзину"},
                                 json_dumps_params={'ensure_ascii': False})
@@ -469,7 +470,7 @@ def cart_add_view(request, id_product):
 
 def cart_del_view(request, id_product):
     if request.method == "GET":
-        result = ... # Вызвать ответственную за это действие функцию
+        result = ... # TODO Вызвать ответственную за это действие функцию
         if result:
             return JsonResponse({"answer": "Продукт успешно удалён из корзины"},
                                 json_dumps_params={'ensure_ascii': False})
@@ -489,4 +490,6 @@ def cart_del_view(request, id_product):
 
 Протестируйте правильность выполнения запросов.
 
-### Практика окончена.
+### Практика окончена
+
+Зафиксируем изменения сделав коммит и отправим эти коммиты на github

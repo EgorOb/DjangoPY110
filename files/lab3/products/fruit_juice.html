@@ -62,7 +62,6 @@
 	          <li class="nav-item"><a href="shop.html" class="nav-link">Магазин</a>
 			  <li class="nav-item"><a href="wishlist.html" class="nav-link">Избранное</a>
 			  <li class="nav-item"><a href="cart.html" class="nav-link">Корзина</a>
-	          <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
 			  <li class="nav-item"><a href="login.html" class="nav-link">Войти в аккаунт</a>
 	        </ul>
 	      </div>
@@ -277,42 +276,5 @@
   <script src="../static/js/google-map.js"></script>
   <script src="../static/js/main.js"></script>
 
-  <script>
-		$(document).ready(function(){
-
-		var quantitiy=0;
-		   $('.quantity-right-plus').click(function(e){
-		        
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		            
-		            $('#quantity').val(quantity + 1);
-
-		          
-		            // Increment
-		        
-		    });
-
-		     $('.quantity-left-minus').click(function(e){
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		      
-		            // Increment
-		            if(quantity>0){
-		            $('#quantity').val(quantity - 1);
-		            }
-		    });
-		    
-		});
-	</script>
-    
   </body>
 </html>
